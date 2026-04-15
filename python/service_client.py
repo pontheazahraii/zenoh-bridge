@@ -46,12 +46,15 @@ def main() -> None:
             KEY,
             payload=payload,
             encoding=zenoh.Encoding.APPLICATION_CDR,
-            timeout=5.0,
+            timeout=15.0,
         )
 
         for reply in replies:
             if reply.err is not None:
-                raise RuntimeError(reply.err.payload.to_string())
+                raise RuntimeError(
+                    "Query failed (bridge/server not ready or incompatible DDS settings): "
+                    + reply.err.payload.to_string()
+                )
 
             sample = reply.ok
             if sample is None:

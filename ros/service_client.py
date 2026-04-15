@@ -43,7 +43,7 @@ def main() -> None:
         node.get_logger().info(f"Response: {a} + {b} = {total}")
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

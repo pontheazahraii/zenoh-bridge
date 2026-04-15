@@ -65,6 +65,14 @@ pip install -r requirements-dev.txt  # dev requirements
 
 This repo includes a minimal `AddTwoInts` service demo implemented in both ROS 2 and Zenoh.
 
+Service interop with `zenoh-bridge-ros2dds` expects CycloneDDS-compatible ROS middleware behavior.
+The service scripts in this repo set:
+
+```shell
+RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+ROS_DOMAIN_ID=42
+```
+
 #### ROS 2 Only
 
 **Terminal 1: Start ROS 2 service server**
@@ -103,11 +111,82 @@ The server should log the handled request, and the client should print the retur
 
 If you omit the arguments, the client uses `2 3`.
 
-Expected result: the server should handle the request and the client should print the returned sum.
+#### Expected Result
+
+The server should handle the request and the client should print the returned sum.
+
+---
 
 #### Mixed ROS / Zenoh
 
-Topic bridging is validated in this repo. Mixed ROS / Zenoh service interop through `zenoh-bridge-ros2dds` is still exploratory and should not be treated as a supported demo flow yet.
+This repo supports both mixed service directions through `zenoh-bridge-ros2dds`.
+
+#### ROS Server -> Zenoh Client
+
+**Terminal 1: Start ROS 2 service server**
+
+```shell
+./scripts/start_ros_service_server.sh
+```
+
+**Terminal 2: Start bridge**
+
+```shell
+./scripts/start_bridge.sh
+```
+
+**Terminal 3: Call the service from Zenoh**
+
+```shell
+./scripts/run_service_client.sh
+```
+
+#### Expected Result
+
+- the ROS server logs the handled request
+- the Zenoh client prints `Response: 2 + 3 = 5`
+
+#### Zenoh Server -> ROS Client
+
+**Terminal 1: Start Zenoh service server**
+
+```shell
+./scripts/start_service_server.sh
+```
+
+**Terminal 2: Start bridge**
+
+```shell
+./scripts/start_bridge.sh
+```
+
+**Terminal 3: Call the service from ROS 2**
+
+```shell
+./scripts/run_ros_service_client.sh
+```
+
+#### Expected Result
+
+- the Zenoh server logs `Handled query: 2 + 3 = 5`
+- the ROS client logs the returned sum
+
+This flow depends on all ROS-facing processes using the same middleware and DDS domain.
+The scripts in this repo already set the required values, but if you run commands manually, verify:
+
+```shell
+echo "$RMW_IMPLEMENTATION"
+echo "$ROS_DOMAIN_ID"
+echo "$ROS_DISTRO"
+```
+
+Expected values for this demo:
+
+```shell
+rmw_cyclonedds_cpp
+42
+humble
+```
 
 ### Topic Bridge Demo: Subscriber
 
