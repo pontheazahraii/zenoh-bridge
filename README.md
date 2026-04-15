@@ -188,6 +188,138 @@ rmw_cyclonedds_cpp
 humble
 ```
 
+---
+
+### Action Demo
+
+This repo includes a minimal `Fibonacci` action demo implemented in both ROS 2 and Zenoh.
+
+Action interop with `zenoh-bridge-ros2dds` expects CycloneDDS-compatible ROS middleware behavior.
+The ROS action scripts in this repo set:
+
+```shell
+RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+ROS_DOMAIN_ID=42
+```
+
+#### ROS 2 Only
+
+**Terminal 1: Start ROS 2 action server**
+
+```shell
+./scripts/start_ros_action_server.sh
+```
+
+**Terminal 2: Call the action from ROS 2**
+
+```shell
+./scripts/run_ros_action_client.sh 5
+```
+
+If you omit the argument, the client uses `5`.
+
+#### Expected Result
+
+The ROS client should log one feedback update followed by the final Fibonacci sequence.
+
+---
+
+#### Zenoh Only
+
+**Terminal 1: Start Zenoh action server**
+
+```shell
+./scripts/start_action_server.sh
+```
+
+**Terminal 2: Call the action from Zenoh**
+
+```shell
+./scripts/run_action_client.sh 5
+```
+
+If you omit the argument, the client uses `5`.
+
+#### Expected Result
+
+The Zenoh client should print goal acceptance, one feedback update, and the final Fibonacci sequence.
+
+---
+
+#### Mixed ROS / Zenoh
+
+This repo supports both mixed action directions through `zenoh-bridge-ros2dds`.
+
+#### ROS Server -> Zenoh Client
+
+**Terminal 1: Start ROS 2 action server**
+
+```shell
+./scripts/start_ros_action_server.sh
+```
+
+**Terminal 2: Start bridge**
+
+```shell
+./scripts/start_bridge.sh
+```
+
+**Terminal 3: Call the action from Zenoh**
+
+```shell
+./scripts/run_action_client.sh 5
+```
+
+#### Expected Result
+
+- the ROS server logs the handled goal
+- the Zenoh client prints goal acceptance
+- the Zenoh client prints one feedback sequence
+- the Zenoh client prints the final result sequence
+
+#### Zenoh Server -> ROS Client
+
+**Terminal 1: Start Zenoh action server**
+
+```shell
+./scripts/start_action_server.sh
+```
+
+**Terminal 2: Start bridge**
+
+```shell
+./scripts/start_bridge.sh
+```
+
+**Terminal 3: Call the action from ROS 2**
+
+```shell
+./scripts/run_ros_action_client.sh 5
+```
+
+#### Expected Result
+
+- the Zenoh server logs the accepted goal
+- the ROS client logs one feedback update
+- the ROS client logs the final result sequence
+
+This flow depends on all ROS-facing processes using the same middleware and DDS domain.
+The scripts in this repo already set the required values, but if you run commands manually, verify:
+
+```shell
+echo "$RMW_IMPLEMENTATION"
+echo "$ROS_DOMAIN_ID"
+echo "$ROS_DISTRO"
+```
+
+Expected values for this demo:
+
+```shell
+rmw_cyclonedds_cpp
+42
+humble
+```
+
 ### Topic Bridge Demo: Subscriber
 
 Verify end-to-end communication between ROS 2, the Zenoh bridge, and a Zenoh Python client.
@@ -287,3 +419,13 @@ The ROS 2 listener should receive repeated samples from the bridged ROS 2 `/chat
 - bridge is active
 - ROS 2 subscriber is connected
 - Zenoh topic data is reaching ROS 2
+
+## Cleanup
+
+Before rerunning a mixed demo, stop any old bridge or demo processes:
+
+```shell
+./scripts/stop_demo.sh
+```
+
+If you start multiple bridge or demo instances without stopping the old ones, requests, feedback, and results may appear multiple times.
