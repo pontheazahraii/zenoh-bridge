@@ -61,6 +61,54 @@ pip install -r requirements-dev.txt  # dev requirements
 
 ## Demos
 
+### Service Demo
+
+This repo includes a minimal `AddTwoInts` service demo implemented in both ROS 2 and Zenoh.
+
+#### ROS 2 Only
+
+**Terminal 1: Start ROS 2 service server**
+
+```shell
+./scripts/start_ros_service_server.sh
+```
+
+**Terminal 2: Call the service from ROS 2**
+
+```shell
+./scripts/run_ros_service_client.sh 4 7
+```
+
+If you omit the arguments, the client uses `2 3`.
+
+#### Expected Result
+
+The server should log the handled request, and the client should print the returned sum.
+
+---
+
+#### Zenoh Only
+
+**Terminal 1: Start Zenoh service server**
+
+```shell
+./scripts/start_service_server.sh
+```
+
+**Terminal 2: Call the service from Zenoh**
+
+```shell
+./scripts/run_service_client.sh 4 7
+```
+
+If you omit the arguments, the client uses `2 3`.
+
+Expected result: the server should handle the request and the client should print the returned sum.
+
+#### Mixed ROS / Zenoh
+
+Topic bridging is validated in this repo. Mixed ROS / Zenoh service interop through `zenoh-bridge-ros2dds` is still exploratory and should not be treated as a supported demo flow yet.
+
 ### Topic Bridge Demo: Subscriber
 
 Verify end-to-end communication between ROS 2, the Zenoh bridge, and a Zenoh Python client.
