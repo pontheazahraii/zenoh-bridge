@@ -78,13 +78,13 @@ ROS_DOMAIN_ID=42
 **Terminal 1: Start ROS 2 service server**
 
 ```shell
-./scripts/start_ros_service_server.sh
+./scripts/service/ros/server.sh
 ```
 
 **Terminal 2: Call the service from ROS 2**
 
 ```shell
-./scripts/run_ros_service_client.sh 4 7
+./scripts/service/ros/client.sh 4 7
 ```
 
 If you omit the arguments, the client uses `2 3`.
@@ -100,13 +100,13 @@ The server should log the handled request, and the client should print the retur
 **Terminal 1: Start Zenoh service server**
 
 ```shell
-./scripts/start_service_server.sh
+./scripts/service/zenoh/server.sh
 ```
 
 **Terminal 2: Call the service from Zenoh**
 
 ```shell
-./scripts/run_service_client.sh 4 7
+./scripts/service/zenoh/client.sh 4 7
 ```
 
 If you omit the arguments, the client uses `2 3`.
@@ -126,7 +126,7 @@ This repo supports both mixed service directions through `zenoh-bridge-ros2dds`.
 **Terminal 1: Start ROS 2 service server**
 
 ```shell
-./scripts/start_ros_service_server.sh
+./scripts/service/ros/server.sh
 ```
 
 **Terminal 2: Start bridge**
@@ -138,7 +138,7 @@ This repo supports both mixed service directions through `zenoh-bridge-ros2dds`.
 **Terminal 3: Call the service from Zenoh**
 
 ```shell
-./scripts/run_service_client.sh
+./scripts/service/zenoh/client.sh
 ```
 
 #### Expected Result
@@ -151,7 +151,7 @@ This repo supports both mixed service directions through `zenoh-bridge-ros2dds`.
 **Terminal 1: Start Zenoh service server**
 
 ```shell
-./scripts/start_service_server.sh
+./scripts/service/zenoh/server.sh
 ```
 
 **Terminal 2: Start bridge**
@@ -163,7 +163,7 @@ This repo supports both mixed service directions through `zenoh-bridge-ros2dds`.
 **Terminal 3: Call the service from ROS 2**
 
 ```shell
-./scripts/run_ros_service_client.sh
+./scripts/service/ros/client.sh
 ```
 
 #### Expected Result
@@ -207,13 +207,13 @@ ROS_DOMAIN_ID=42
 **Terminal 1: Start ROS 2 action server**
 
 ```shell
-./scripts/start_ros_action_server.sh
+./scripts/action/ros/server.sh
 ```
 
 **Terminal 2: Call the action from ROS 2**
 
 ```shell
-./scripts/run_ros_action_client.sh 5
+./scripts/action/ros/client.sh 5
 ```
 
 If you omit the argument, the client uses `5`.
@@ -229,13 +229,13 @@ The ROS client should log one feedback update followed by the final Fibonacci se
 **Terminal 1: Start Zenoh action server**
 
 ```shell
-./scripts/start_action_server.sh
+./scripts/action/zenoh/server.sh
 ```
 
 **Terminal 2: Call the action from Zenoh**
 
 ```shell
-./scripts/run_action_client.sh 5
+./scripts/action/zenoh/client.sh 5
 ```
 
 If you omit the argument, the client uses `5`.
@@ -255,7 +255,7 @@ This repo supports both mixed action directions through `zenoh-bridge-ros2dds`.
 **Terminal 1: Start ROS 2 action server**
 
 ```shell
-./scripts/start_ros_action_server.sh
+./scripts/action/ros/server.sh
 ```
 
 **Terminal 2: Start bridge**
@@ -267,7 +267,7 @@ This repo supports both mixed action directions through `zenoh-bridge-ros2dds`.
 **Terminal 3: Call the action from Zenoh**
 
 ```shell
-./scripts/run_action_client.sh 5
+./scripts/action/zenoh/client.sh 5
 ```
 
 #### Expected Result
@@ -282,7 +282,7 @@ This repo supports both mixed action directions through `zenoh-bridge-ros2dds`.
 **Terminal 1: Start Zenoh action server**
 
 ```shell
-./scripts/start_action_server.sh
+./scripts/action/zenoh/server.sh
 ```
 
 **Terminal 2: Start bridge**
@@ -294,7 +294,7 @@ This repo supports both mixed action directions through `zenoh-bridge-ros2dds`.
 **Terminal 3: Call the action from ROS 2**
 
 ```shell
-./scripts/run_ros_action_client.sh 5
+./scripts/action/ros/client.sh 5
 ```
 
 #### Expected Result
@@ -345,7 +345,7 @@ topic_subscriber.py
 **Terminal 1: Start ROS 2 talker**
 
 ```shell
-./scripts/start_ros_talker.sh
+./scripts/topic/ros/talker.sh
 ```
 
 **Terminal 2: Start bridge**
@@ -357,7 +357,7 @@ topic_subscriber.py
 **Terminal 3: Run Python subscriber**
 
 ```shell
-./scripts/run_topic_subscriber.sh
+./scripts/topic/zenoh/subscriber.sh
 ```
 
 #### Expected Result
@@ -396,7 +396,7 @@ ROS 2 listener
 **Terminal 1: Start ROS 2 listener**
 
 ```shell
-./scripts/start_ros_listener.sh
+./scripts/topic/ros/listener.sh
 ```
 
 **Terminal 2: Start bridge**
@@ -408,7 +408,7 @@ ROS 2 listener
 **Terminal 3: Run Python publisher**
 
 ```shell
-./scripts/run_topic_publisher.sh
+./scripts/topic/zenoh/publisher.sh
 ```
 
 #### Expected Result
